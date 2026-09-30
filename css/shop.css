@@ -1,0 +1,214 @@
+/* shop.css — dipakai produk.html, keranjang.html, checkout.html, lacak.html, akun.html */
+.pageintro{padding:clamp(32px,5vw,56px) 0 0}
+.breadcrumb{font-size:.8125rem;color:var(--text-muted);margin-bottom:var(--s-3)}
+.breadcrumb a{color:inherit;text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+
+/* Detail produk */
+.pdetail{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);padding:var(--s-8) 0 var(--s-20)}
+.gallery-main{aspect-ratio:1/1;border-radius:var(--radius-lg);overflow:hidden;background:#e9e1cf}
+.gallery-main img{width:100%;height:100%;object-fit:cover}
+.gallery-thumbs{display:flex;gap:10px;margin-top:10px}
+.gallery-thumbs button{width:64px;height:64px;border-radius:10px;overflow:hidden;border:1px solid var(--border);padding:0;cursor:pointer;background:#e9e1cf}
+.gallery-thumbs button.on{border-color:var(--primary);border-width:2px}
+.pd-cat{color:var(--text-muted);font-size:.875rem}
+.pd-name{font-size:clamp(1.8rem,2.6vw + .6rem,2.6rem);margin:6px 0 10px}
+.pd-price{font-size:1.6rem;font-weight:700;display:block;margin-bottom:var(--s-4)}
+.pd-desc{color:var(--text-muted);margin-bottom:var(--s-6)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:var(--radius-md);height:46px}
+.qty button{width:44px;height:100%;border:0;background:none;font-size:1.1rem;cursor:pointer}
+.qty button:hover{background:rgb(36 33 28/.06)}
+.qty input{width:44px;text-align:center;border:0;background:none;font:inherit;height:100%}
+.pd-actions{display:flex;gap:12px;margin:var(--s-6) 0}
+.pd-actions .btn{flex:1}
+.pd-meta{display:grid;gap:8px;font-size:.875rem;color:var(--text-muted);border-top:1px solid var(--border);padding-top:var(--s-4)}
+.tabs{margin-top:var(--s-20)}
+.tabs-nav{display:flex;gap:var(--s-6);border-bottom:1px solid var(--border);overflow-x:auto}
+.tabs-nav button{padding:14px 2px;background:none;border:0;border-bottom:2px solid transparent;font-weight:600;color:var(--text-muted);cursor:pointer;white-space:nowrap}
+.tabs-nav button.on{color:var(--text);border-color:var(--primary)}
+.tab-panel{padding:var(--s-6) 0;max-width:52rem;color:var(--text-muted);line-height:1.7}
+.tab-panel dl{display:grid;grid-template-columns:auto 1fr;gap:8px 20px}
+.tab-panel dt{font-weight:600;color:var(--text)}
+
+/* Keranjang & checkout */
+.cart-layout{display:grid;grid-template-columns:1.6fr 1fr;gap:var(--s-8);align-items:start;padding:var(--s-8) 0 var(--s-20)}
+.cart-line{display:grid;grid-template-columns:80px 1fr auto;gap:var(--s-4);align-items:center;padding:var(--s-4) 0;border-bottom:1px solid var(--border)}
+.cart-thumb{width:80px;height:80px;border-radius:10px;overflow:hidden;background:#e9e1cf}
+.cart-thumb img{width:100%;height:100%;object-fit:cover}
+.cart-line h3{font-size:1rem}
+.cart-line .muted{font-size:.875rem}
+.cart-line-end{display:flex;flex-direction:column;align-items:end;gap:8px}
+.remove-btn{background:none;border:0;color:var(--text-muted);font-size:.8125rem;cursor:pointer;text-decoration:underline}
+.remove-btn:hover{color:var(--error)}
+.summary{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--s-6);position:sticky;top:calc(var(--nav-h) + 16px)}
+.summary h2{font-size:1.25rem;margin-bottom:var(--s-4)}
+.summary-row{display:flex;justify-content:space-between;padding:8px 0;font-size:.9375rem}
+.summary-row.total{border-top:1px solid var(--border);margin-top:8px;padding-top:14px;font-weight:700;font-size:1.0625rem}
+.voucher{display:flex;gap:8px;margin:var(--s-4) 0}
+.voucher input{flex:1;height:42px;border:1px solid var(--border);border-radius:10px;padding:0 12px;background:var(--background)}
+.empty{text-align:center;padding:var(--s-20) 0;color:var(--text-muted)}
+
+/* Checkout steps */
+.checkout-steps{display:grid;gap:var(--s-6)}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--s-6)}
+.step h2{font-size:1.0625rem;display:flex;gap:10px;align-items:center;margin-bottom:var(--s-4)}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--primary);color:var(--on-dark);display:grid;place-items:center;font-size:.8125rem;flex:none}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+.formrow .full{grid-column:1/-1}
+.field label{display:block;font-size:.875rem;font-weight:500;margin-bottom:6px}
+.field input,.field textarea,.field select{width:100%;height:46px;border:1px solid var(--border);border-radius:10px;padding:0 14px;background:var(--background);font:inherit}
+.field textarea{height:80px;padding:10px 14px;resize:vertical}
+.radio-card{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;margin-bottom:10px}
+.radio-card:has(input:checked){border-color:var(--primary);background:rgb(31 74 54/.05)}
+.radio-card input{margin-top:3px}
+.radio-card .t{font-weight:600}.radio-card .d{font-size:.8125rem;color:var(--text-muted)}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Lacak pesanan */
+.track-box{max-width:34rem;margin:0 auto;padding:var(--s-20) 0}
+.track-search{display:flex;gap:10px}
+.track-search input{flex:1;height:48px;border:1px solid var(--border);border-radius:10px;padding:0 16px;background:var(--surface)}
+.track-result{margin-top:var(--s-8);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--s-6)}
+.status-chip{display:inline-block;font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:99px;background:rgb(47 125 79/.14);color:var(--success)}
+.timeline{list-style:none;margin:var(--s-6) 0 0;padding:0;display:grid;gap:0}
+.timeline li{display:grid;grid-template-columns:20px 1fr;gap:14px;padding-bottom:22px;position:relative}
+.timeline li::before{content:"";position:absolute;left:9px;top:20px;bottom:0;width:1px;background:var(--border)}
+.timeline li:last-child::before{display:none}
+.timeline .dot{width:20px;height:20px;border-radius:50%;background:var(--primary);display:grid;place-items:center}
+.timeline .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--on-dark)}
+.timeline li.pending .dot{background:var(--border)}
+.timeline .tt{font-weight:600}.timeline .ts{font-size:.8125rem;color:var(--text-muted)}
+
+/* Akun */
+.acc-layout{display:grid;grid-template-columns:220px 1fr;gap:var(--s-8);padding:var(--s-8) 0 var(--s-20)}
+.acc-nav{display:grid;gap:2px;align-self:start;position:sticky;top:calc(var(--nav-h) + 16px)}
+.acc-nav button{text-align:left;padding:12px 14px;border-radius:10px;border:0;background:none;cursor:pointer;font-weight:500;color:var(--text-muted)}
+.acc-nav button.on{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.acc-panel{display:none}.acc-panel.on{display:block}
+.acc-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--s-6);margin-bottom:var(--s-4)}
+.order-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .pdetail,.cart-layout{grid-template-columns:1fr}
+  .acc-layout{grid-template-columns:1fr}
+  .acc-nav{position:static;display:flex;overflow-x:auto;gap:8px}
+  .formrow,.pay-grid{grid-template-columns:1fr}
+}
+
+/* Pembayaran QRIS & status */
+.status-chip.pending{background:rgb(201 138 27/.14);color:var(--warning)}
+.qris-box{display:flex;gap:var(--s-4);align-items:center;flex-wrap:wrap}
+.qris-img{width:132px;height:132px;border-radius:10px;background:#fff;border:1px solid var(--border);display:grid;place-items:center;flex:none;overflow:hidden}
+.qris-img img{width:100%;height:100%;object-fit:contain}
+.qris-pattern{width:100%;height:100%;background:
+  repeating-linear-gradient(90deg,#1b1b1b 0 6px,#fff 6px 12px) top left/48px 12px no-repeat,
+  repeating-linear-gradient(0deg,#1b1b1b 0 6px,#fff 6px 12px) top left/12px 48px no-repeat,
+  repeating-linear-gradient(90deg,#1b1b1b 0 6px,#fff 6px 12px) bottom left/48px 12px no-repeat,
+  repeating-linear-gradient(0deg,#1b1b1b 0 6px,#fff 6px 12px) top right/12px 48px no-repeat,
+  #fff}
+.pay-note{font-size:.8125rem;color:var(--text-muted);max-width:20rem}
+.copy-row{display:flex;align-items:center;gap:8px;background:var(--background);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-weight:600;margin-top:6px}
+.copy-row button{margin-left:auto;background:none;border:0;color:var(--primary);font-weight:600;cursor:pointer;font-size:.8125rem}
+
+/* =========================================================
+   Peningkatan Animasi UI (Transitions & Keyframes)
+   ========================================================= */
+
+/* 1. Transisi Smooth pada Kartu Produk & Gambar */
+.pcard {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, box-shadow;
+}
+
+.pcard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.12);
+}
+
+.pcard-img img {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pcard:hover .pcard-img img {
+  transform: scale(1.06);
+}
+
+/* 2. Efek Bump & Bounce pada Tombol & Icon Bag/Heart */
+.icon-btn {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.icon-btn:active {
+  transform: scale(0.9);
+}
+
+@keyframes cartBump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25) rotate(-5deg); }
+  60% { transform: scale(0.95) rotate(3deg); }
+  100% { transform: scale(1); }
+}
+
+.bump {
+  animation: cartBump 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 3. Efek Pop-in pada Ikon Heart (Wishlist) saat diklik */
+.wish svg {
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), fill 0.2s ease, stroke 0.2s ease;
+}
+
+.wish[aria-pressed="true"] svg {
+  fill: #e63946;
+  stroke: #e63946;
+  animation: heartPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* 4. Modal Pop-up Fade & Scale-Up */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+#searchOverlay > div,
+#wishlistOverlay > div {
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* 5. Smooth Fade pada Toast Notification */
+.toast {
+  animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* 6. Animasi Tab Switch di Detail Produk */
+.tab-panel {
+  animation: fadeInTab 0.3s ease;
+}
+
+@keyframes fadeInTab {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

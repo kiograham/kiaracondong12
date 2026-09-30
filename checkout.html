@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout Stand - Kiaracondong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/shop.css">
+</head>
+<body data-page="checkout">
+<a class="skip-link" href="#konten">Lewati ke konten</a>
+<div id="site-header"></div>
+
+<main id="konten">
+  <div class="wrap pageintro">
+    <p class="breadcrumb"><a href="index.html">Beranda</a> / <a href="keranjang.html">Keranjang</a> / Checkout Stand</p>
+    <h1 class="display" style="font-size:clamp(1.8rem,2.6vw + .6rem,2.6rem)">Pembayaran Stand Offline</h1>
+    <p class="muted" style="margin-top:6px;font-size:.875rem">Silakan selesaikan pembayaran langsung di kasir stand atau melalui QRIS.</p>
+  </div>
+
+  <div class="wrap cart-layout" id="checkoutLayout">
+    <div class="checkout-steps">
+      <!-- STEP 1: INFORMASI PEMBELI (CUKUP NAMA & KODE/MEJA) -->
+      <section class="step">
+        <h2><span class="step-num">1</span>Data Pemesan</h2>
+        <div class="formrow">
+          <div class="field"><label for="cNama">Nama Pemesan / Panggilan</label><input id="cNama" placeholder="Contoh: Budi"></div>
+          <div class="field"><label for="cHp">Nomor HP (Opsional)</label><input id="cHp" placeholder="08xxxxxxxxxx"></div>
+        </div>
+      </section>
+
+      <!-- STEP 2: METODE PEMBAYARAN -->
+      <section class="step">
+        <h2><span class="step-num">2</span>Metode Pembayaran</h2>
+        <div class="pay-grid">
+          <label class="radio-card"><input type="radio" name="bayar" value="qris" data-pay checked><span class="t">QRIS (Scan Langsung)</span></label>
+          <label class="radio-card"><input type="radio" name="bayar" value="cash" data-pay><span class="t">Tunai / Cash di Kasir</span></label>
+          <label class="radio-card"><input type="radio" name="bayar" value="transfer" data-pay><span class="t">Transfer Bank / E-Wallet</span></label>
+        </div>
+
+        <div id="payDetail" style="margin-top:var(--s-4);padding-top:var(--s-4);border-top:1px solid var(--border)"></div>
+      </section>
+    </div>
+
+    <!-- RINGKASAN PESANAN -->
+    <aside class="summary" id="summaryAside">
+      <h2>Ringkasan Pesanan</h2>
+      <div id="coItems"></div>
+      <div class="summary-row"><span>Subtotal</span><span id="coSubtotal">Rp 0</span></div>
+      <div class="summary-row total"><span>Total Bayar</span><span id="coTotal">Rp 0</span></div>
+      <button class="btn btn-primary" id="payBtn" style="width:100%;margin-top:var(--s-4)">Konfirmasi Pembayaran</button>
+      <p class="muted" style="font-size:.75rem;margin-top:10px">Tunjukkan layar bukti pesanan kepada petugas kasir stand.</p>
+    </aside>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="js/products.js"></script>
+<script src="js/site.js"></script>
+
+<script>
+document.addEventListener("site:ready", () => {
+  const S = window.Site;
+  const C = window.SITE_CONFIG || {};
+
+  // Nomor WhatsApp Admin otomatis dari config.js (diubah ke format 62)
+  const NO_WA_ADMIN = (C.contact?.whatsapp || "085122110471").replace(/^0/, "62");
+
+  const PAY_LABEL = { 
+    qris: "Lanjutkan ke Pembayaran QRIS", 
+    cash: "Konfirmasi Pesanan Tunai", 
+    transfer: "Lanjutkan ke Transfer Bank / E-Wallet" 
+  };
+
+  function renderPayDetail() {
+    const method = document.querySelector("[data-pay]:checked")?.value || "qris";
+    const box = document.getElementById("payDetail");
+    document.getElementById("payBtn").textContent = PAY_LABEL[method];
+
+    if (method === "qris") {
+      box.innerHTML = `<p class="pay-note">Pilih metode ini untuk pembayaran via Scan QRIS (GoPay, OVO, DANA, ShopeePay, M-Banking).</p>`;
+    } else if (method === "cash") {
+      box.innerHTML = `<p class="pay-note">Silakan siapkan uang pas dan bayar langsung ke kasir saat mengambil pesanan.</p>`;
+    } else if (method === "transfer") {
+      box.innerHTML = `
+        <div class="pay-note">
+          <p><strong>Bank Mandiri:</strong> ${C.payment?.bankNumber || "1690005136731"} a.n. ${C.payment?.bankHolder || "Masitoh Obea"}</p>
+          <p style="margin-top:4px;"><strong>DANA:</strong> ${C.payment?.ewalletNumber || "085122110471"}</p>
+        </div>`;
+    }
+  }
+
+  document.querySelectorAll("[data-pay]").forEach(r => r.addEventListener("change", renderPayDetail));
+  renderPayDetail();
+
+  function recalc() {
+    const items = S.Cart.items();
+    let subtotal = 0;
+    document.getElementById("coItems").innerHTML = items.map(it => {
+      const p = S.byId(it.id); if (!p) return ""; subtotal += p.price*it.qty;
+      return `<div class="summary-row"><span>${p.name} × ${it.qty}</span><span>${S.rupiah(p.price*it.qty)}</span></div>`;
+    }).join("");
+    
+    document.getElementById("coSubtotal").textContent = S.rupiah(subtotal);
+    document.getElementById("coTotal").textContent = S.rupiah(subtotal);
+    return { items, subtotal };
+  }
+
+  const state = recalc();
+  if (!state.items.length) {
+    document.getElementById("checkoutLayout").innerHTML = `<div class="empty" style="grid-column:1/-1"><p>Keranjangmu masih kosong.</p><a class="btn btn-primary" href="produk.html" style="margin-top:16px;display:inline-flex">Lihat Menu</a></div>`;
+    return;
+  }
+
+  document.getElementById("payBtn").addEventListener("click", () => {
+    const nama = document.getElementById("cNama").value.trim();
+    if (!nama) { 
+      document.getElementById("cNama").focus(); 
+      S.toast("Isi nama pemesan terlebih dahulu."); 
+      return; 
+    }
+
+    const method = document.querySelector("[data-pay]:checked")?.value || "qris";
+    const orderId = "MO" + Math.floor(1000 + Math.random()*8999);
+    const items = S.Cart.items();
+    
+    let rincianPesanan = "";
+    let totalBayar = 0;
+
+    items.forEach((it, index) => {
+      const p = S.byId(it.id);
+      if (p) {
+        const itemTotal = p.price * it.qty;
+        totalBayar += itemTotal;
+        rincianPesanan += `${index + 1}. ${p.name} (${it.qty}x) = ${S.rupiah(itemTotal)}\n`;
+      }
+    });
+
+    const metodeTeks = {
+      qris: "QRIS",
+      cash: "Tunai / Cash di Kasir",
+      transfer: "Transfer Bank / E-Wallet"
+    }[method];
+
+    const pesanWA = 
+`Halo Admin Masitoh Obea, saya mau pesan! 🛒
+
+*Nomor Pesanan:* #${orderId}
+*Nama Pemesan:* ${nama}
+*Metode Bayar:* ${metodeTeks}
+
+*Rincian Pesanan:*
+${rincianPesanan}
+*Total Pembayaran:* ${S.rupiah(totalBayar)}
+
+Mohon diproses ya, terima kasih!`;
+
+    const urlWA = `https://wa.me/${NO_WA_ADMIN}?text=${encodeURIComponent(pesanWA)}`;
+
+    // Simpan history ke LocalStorage
+    const order = { 
+      id: orderId, 
+      date: Date.now(), 
+      nama: nama,
+      hp: document.getElementById("cHp").value.trim() || "-",
+      items: items.map(it=>({...it})),
+      total: totalBayar, 
+      payment: method, 
+      status: "Diproses" 
+    };
+
+    const orders = JSON.parse(localStorage.getItem("site_orders")||"[]"); 
+    orders.unshift(order);
+    localStorage.setItem("site_orders", JSON.stringify(orders));
+    localStorage.setItem("site_cart", "[]");
+    
+    document.querySelectorAll(".cart-count").forEach(el=>{el.textContent="";el.dataset.n="0";});
+
+    // Tampilan Instruksi Bayar Pasca Klik
+    let instruksiBayar = "";
+
+    if (method === "qris") {
+      instruksiBayar = `
+        <div style="background:#fff;padding:15px;border:1px solid #ddd;border-radius:8px;margin:15px 0;">
+          <p style="font-weight:bold;margin-bottom:8px;">Silakan Scan QRIS di Bawah Ini:</p>
+          <div style="max-width:220px;margin:0 auto 10px;">
+            ${C.qrisImage ? `<img src="${C.qrisImage}" alt="Kode QRIS" style="width:100%;border-radius:8px;">` : `<div style="background:#eee;height:180px;display:flex;align-items:center;justify-content:center;border-radius:8px;">[Gambar QRIS]</div>`}
+          </div>
+          <p style="font-size:0.9rem;color:#555;">Total Bayar: <strong style="font-size:1.1rem;color:#000;">${S.rupiah(totalBayar)}</strong></p>
+        </div>
+      `;
+    } else if (method === "transfer") {
+      instruksiBayar = `
+        <div style="background:#f9f9f9;padding:15px;border:1px solid #ddd;border-radius:8px;margin:15px 0;text-align:left;">
+          <p style="font-weight:bold;">Silakan Transfer Total: ${S.rupiah(totalBayar)}</p>
+          <p style="margin-top:6px;font-size:0.9rem;line-height:1.5;">
+            <strong>Bank Mandiri:</strong> 1690005136731 a.n. Masitoh Obea<br>
+            <strong>DANA:</strong> 085122110471
+          </p>
+        </div>
+      `;
+    } else {
+      instruksiBayar = `
+        <div style="background:#f9f9f9;padding:15px;border:1px solid #ddd;border-radius:8px;margin:15px 0;">
+          <p>Total Bayar: <strong>${S.rupiah(totalBayar)}</strong></p>
+          <p style="font-size:0.85rem;color:#666;margin-top:4px;">Silakan siapkan uang pas saat melakukan pembayaran di kasir stand.</p>
+        </div>
+      `;
+    }
+
+    // Render Halaman Berhasil
+    document.getElementById("checkoutLayout").innerHTML = `
+      <div class="empty" style="grid-column:1/-1;text-align:center;max-width:500px;margin:0 auto;">
+        <p style="font-family:var(--font-display);font-size:1.6rem;color:var(--text)">Pesanan Dibuat! (#${orderId})</p>
+        <p style="margin-top:4px;">Pemesan: <strong>${nama}</strong></p>
+        
+        ${instruksiBayar}
+
+        <p class="muted" style="font-size:0.85rem;margin-bottom:15px;">
+          *Lakukan pembayaran sesuai instruksi di atas, lalu klik tombol di bawah untuk Mengonfirmasi ke WhatsApp Admin.
+        </p>
+
+        <a class="btn btn-primary" href="${urlWA}" target="_blank" style="width:100%;padding:12px;font-size:1rem;display:inline-flex;justify-content:center;align-items:center;gap:8px;">
+          <span>Konfirmasi Pesanan ke WhatsApp</span>
+        </a>
+
+        <div style="margin-top:15px;">
+          <a href="index.html" style="font-size:0.85rem;color:#666;">Kembali ke Beranda</a>
+        </div>
+      </div>
+    `;
+  });
+});
+</script>
+</body>
+</html>

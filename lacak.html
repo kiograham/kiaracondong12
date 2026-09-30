@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status Antrean Pesanan · Stand Kiaracondong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/shop.css">
+<style>
+  .track-card {
+    background: #fff;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-top: 20px;
+  }
+  .track-search {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .track-search input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border, #ccc);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  /* Timeline Tracking Status Stand Offline */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+    margin-top: 24px;
+    border-left: 2px dashed #cbd5e1;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+  .timeline-dot {
+    position: absolute;
+    left: -35px;
+    top: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #cbd5e1;
+  }
+  .timeline-item.active .timeline-dot {
+    background: #10b981;
+    box-shadow: 0 0 0 2px #10b981;
+  }
+  .timeline-date {
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+  .timeline-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 2px 0;
+  }
+  .timeline-desc {
+    font-size: 0.875rem;
+    color: #475569;
+  }
+</style>
+</head>
+<body data-page="lacak">
+<a class="skip-link" href="#konten">Lewati ke konten</a>
+<div id="site-header"></div>
+
+<main id="konten" class="wrap" style="max-width:720px; padding-top:40px; padding-bottom:60px;">
+  <p class="breadcrumb"><a href="index.html">Beranda</a> / <span>Status Pesanan Stand</span></p>
+  
+  <h1 class="display" style="font-size:2rem; margin-top:8px;">Lacak Antrean Stand</h1>
+  <p style="color:#64748b; margin-bottom:24px;">Masukkan Nomor Antrean atau ID Pesanan kamu untuk melihat proses penyiapan pesanan di Stand Stand Kiaracondong.</p>
+
+  <div class="track-search">
+    <input type="text" id="trackInput" placeholder="Contoh: #STD5355" aria-label="Nomor Antrean / ID Pesanan">
+    <button class="btn btn-primary" id="btnTrack">Cek Status</button>
+  </div>
+
+  <div id="trackResult" hidden>
+    <div class="track-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:12px; margin-bottom:16px;">
+        <div>
+          <span style="font-size:0.8rem; color:#64748b;">Nomor Antrean Stand</span>
+          <div style="font-weight:700; font-size:1.2rem; color:var(--primary, #000);" id="orderIdText">#STD5355</div>
+        </div>
+        <span class="badge" style="background:#fef3c7; color:#d97706; padding:6px 12px; border-radius:20px; font-weight:600;" id="statusBadge">Sedang Disiapkan</span>
+      </div>
+
+      <div style="font-size:0.9rem; margin-bottom:16px; color:#334155; background:#f8fafc; padding:12px; border-radius:8px;">
+        📍 <strong>Lokasi Stand:</strong> Stand MOSAIK Kiaracondong<br>
+        🛍️ <strong>Tipe Pesanan:</strong> Ambil di Stand (Dine-in / Takeaway)
+      </div>
+
+      <h3 style="font-size:1rem; font-weight:600; margin-top:20px;">Proses Dapur & Stand</h3>
+
+      <div class="timeline" id="timelineList">
+        <div class="timeline-item active">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">29 September 2026, 23:25 WIB</div>
+          <div class="timeline-title">Sedang Disiapkan di Dapur Stand</div>
+          <div class="timeline-desc">Tim koki/barista stand sedang meracik dan mengemas pesanan kamu secara segar.</div>
+        </div>
+        <div class="timeline-item active">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">29 September 2026, 23:20 WIB</div>
+          <div class="timeline-title">Pesanan Diterima Kasir Stand</div>
+          <div class="timeline-desc">Pesanan telah dicatat dan masuk dalam daftar antrean pembuatan.</div>
+        </div>
+        <div class="timeline-item active">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">29 September 2026, 23:18 WIB</div>
+          <div class="timeline-title">Pembayaran Dikonfirmasi</div>
+          <div class="timeline-desc">Pembayaran di kasir/QRIS berhasil terverifikasi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="js/products.js"></script>
+<script src="js/site.js"></script>
+
+<script>
+document.addEventListener("site:ready", () => {
+  const input = document.getElementById("trackInput");
+  const btn = document.getElementById("btnTrack");
+  const result = document.getElementById("trackResult");
+  const orderIdText = document.getElementById("orderIdText");
+
+  const params = new URLSearchParams(window.location.search);
+  const resiUrl = params.get("resi") || params.get("id");
+  
+  if (resiUrl) {
+    input.value = resiUrl;
+    showTracking(resiUrl);
+  }
+
+  btn.addEventListener("click", () => {
+    const val = input.value.trim();
+    if (!val) {
+      window.Site.toast("Masukkan Nomor Antrean terlebih dahulu");
+      return;
+    }
+    showTracking(val);
+  });
+
+  function showTracking(resi) {
+    orderIdText.textContent = resi.toUpperCase();
+    result.hidden = false;
+    window.Site.toast("Status antrean ditemukan!");
+  }
+});
+</script>
+</body>
+</html>

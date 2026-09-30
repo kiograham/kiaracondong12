@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detail Produk · Bakso Aci Khas Garut</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/shop.css">
+</head>
+<body data-page="produk">
+  <a class="skip-link" href="#konten">Lewati ke konten</a>
+  <div id="site-header"></div>
+
+  <main id="konten">
+    <div class="wrap pageintro">
+      <p class="breadcrumb"><a href="index.html">Beranda</a> / <span data-crumb>Bakso Aci Khas Garut</span></p>
+    </div>
+    
+    <div class="wrap pdetail">
+      <div>
+        <div class="gallery-main" id="galleryMain"></div>
+        <div class="gallery-thumbs" id="galleryThumbs" hidden></div>
+      </div>
+      <div>
+        <span class="pd-cat" data-cat>Kuliner khas Garut</span>
+        <h1 class="display pd-name" data-name>Bakso Aci Khas Garut</h1>
+        <span class="pd-price" data-price>Rp 15.000</span>
+        <p class="pd-desc" data-desc>Cita rasa autentik khas Garut dengan tekstur kenyal gurih, kuah rempah pedas, dan topping melimpah.</p>
+        <div class="pills" role="group" aria-label="Pilih varian" data-variants></div>
+        
+        <div style="display:flex;align-items:center;gap:16px;margin:var(--s-5) 0">
+          <div class="qty">
+            <button type="button" id="qMinus" aria-label="Kurangi jumlah">−</button>
+            <input id="qty" type="text" inputmode="numeric" value="1" aria-label="Jumlah">
+            <button type="button" id="qPlus" aria-label="Tambah jumlah">+</button>
+          </div>
+        </div>
+
+        <div class="pd-actions">
+          <button class="btn btn-outline" id="addCart">Tambah ke Keranjang</button>
+          <a class="btn btn-primary" href="checkout.html" id="buyNow">Beli Sekarang</a>
+        </div>
+        
+        <button class="btn btn-outline" id="wishBtn" style="width:100%;margin-bottom:var(--s-4)" aria-pressed="false">Simpan ke Wishlist</button>
+        <div class="pd-meta"></div>
+      </div>
+    </div>
+
+    <div class="wrap tabs">
+      <div class="tabs-nav" role="tablist">
+        <button class="on" data-tab="deskripsi">Deskripsi</button>
+        <button data-tab="sejarah">Sejarah</button>
+        <button data-tab="keunikan">Keunikan</button>
+        <button data-tab="komposisi">Komposisi & Penyajian</button>
+        <button data-tab="packaging">Packaging</button>
+      </div>
+      <div class="tab-panel" data-panel="deskripsi"></div>
+      <div class="tab-panel" data-panel="sejarah" hidden></div>
+      <div class="tab-panel" data-panel="keunikan" hidden></div>
+      <div class="tab-panel" data-panel="komposisi" hidden></div>
+      <div class="tab-panel" data-panel="packaging" hidden></div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/config.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/site.js"></script>
+
+  <script>
+  document.addEventListener("site:ready", () => {
+    const S = window.Site;
+    const products = window.PRODUCTS || [];
+    
+    // Baca parameter dari URL (contoh: produk.html?produk=bakso-aci atau ?id=1)
+    const params = new URLSearchParams(window.location.search);
+    const paramProduk = params.get("produk") || params.get("id");
+
+    // Cari produk berdasarkan slug atau id, jika tidak ada gunakan default Bakso Aci Garut
+    let p = products.find(item => String(item.slug) === paramProduk || String(item.id) === paramProduk);
+    
+    // Data default Bakso Aci Khas Garut jika tidak terhubung ke file produk JS external
+    const defaultData = {
+      id: "bakso-aci-garut",
+      name: "Bakso Aci Khas Garut",
+      category: "Kuliner Jawa Barat",
+      price: 15000,
+      shortDescription: "Kehangatan kuah gurih berempah dan kenyalnya bakso aci khas Jawa Barat dalam satu kemasan siap saji.",
+      description: "Bakso Aci merupakan varian bakso khas Jawa Barat yang terbuat dari tepung tapioka (aci) berkualitas yang dipadukan dengan daging cincang halus. Disajikan dengan kuah gurih berempah, sambal pedas alami, serta topping pelengkap seperti mie, siomay, batagor kering, dan pilus renyah.",
+      history: "Sejarah Bakso Aci bermula pada era kolonial di Garut pada abad ke-19. Pada masa itu, bahan seperti daging segar sulit didapatkan oleh masyarakat setempat. Sebagai inovasi, masyarakat Garut mencampurkan tepung aci (tapioka) dengan daging ayam atau sapi yang dicincang halus. Berawal dari pasar-pasar tradisional dan gerai tepi jalan, kuliner ini berkembang pesat hingga disajikan dalam kemasan siap saji secara online.",
+      uniqueness: "Keunikan Bakso Aci Garut terletak pada perpaduan tekstur bakso aci yang kenyal-gurih dan kuah rempah pedas segar. Berbeda dari bakso daging biasa, hidangan ini dilengkapi dengan sensasi kerenyahan topping tradisional seperti cuanki, batagor kering, mie, dan pilus renyah.",
+      composition: "Tepung tapioka, daging ayam, cabai rawit, bawang putih, garam, merica, penyedap rasa, bumbu rempah, bawang goreng.",
+      usage: "1. Membaca basmallah.<br>2. Rebus isian di dalam kemasan ke dalam 500ml air selama 10–15 menit.<br>3. Siapkan bumbu rempah dan sambal ke dalam mangkuk sesuai selera.<br>4. Setelah rebusan matang, angkat dan tuang ke mangkuk beserta air kuahnya sebanyak 150ml.<br>5. Masukkan topping mie, siomay, batagor, dan pilus.<br>6. Membaca hamdallah setelah selesai menikmati.",
+      packaging: "Kemasan pouch siap saji higienis yang dirancang rapat dan tahan lama, menjaga kualitas rasa, bumbu rempah, serta renyahnya topping hingga siap disajikan.",
+      variants: ["Original Pedas", "Extra Pedas", "Guriho / Tanpa Cabai"]
+    };
+
+    if (!p) p = products[0] || defaultData;
+
+    document.title = (p.name || defaultData.name) + " · " + (S.BRAND || "Bakso Aci Garut");
+    document.querySelector("[data-crumb]").textContent = p.name || defaultData.name;
+    document.querySelector("[data-cat]").textContent = (p.category || defaultData.category) + (p.sample ? " · contoh data" : "");
+    document.querySelector("[data-name]").textContent = p.name || defaultData.name;
+    document.querySelector("[data-price]").textContent = S.rupiah ? S.rupiah(p.price || defaultData.price) : "Rp " + (p.price || defaultData.price).toLocaleString("id-ID");
+    document.querySelector("[data-desc]").textContent = p.shortDescription || defaultData.shortDescription;
+    
+    document.getElementById("galleryMain").innerHTML = p.image
+      ? `<img src="${p.image}" alt="${p.name}">`
+      : `<div class="ph" role="img" aria-label="Foto ${p.name}">Foto Bakso Aci Khas Garut</div>`;
+    
+    const variants = p.variants || defaultData.variants;
+    document.querySelector("[data-variants]").innerHTML = variants.map((v, i) =>
+      `<button class="pill${i ? "" : " on"}" data-variant="${v}" aria-pressed="${!i}">${v}</button>`).join("");
+
+    // Event listener untuk tombol varian
+    document.querySelectorAll("[data-variants] .pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("[data-variants] .pill").forEach(b => {
+          b.classList.remove("on");
+          b.setAttribute("aria-pressed", "false");
+        });
+        btn.classList.add("on");
+        btn.setAttribute("aria-pressed", "true");
+      });
+    });
+
+    const qty = document.getElementById("qty");
+    document.getElementById("qMinus").onclick = () => { qty.value = Math.max(1, (+qty.value || 1) - 1); };
+    document.getElementById("qPlus").onclick = () => { qty.value = (+qty.value || 1) + 1; };
+    qty.addEventListener("change", () => { qty.value = Math.max(1, +qty.value || 1); });
+
+    function currentVariant() { 
+      return document.querySelector("[data-variant].on")?.dataset.variant || variants[0]; 
+    }
+    
+    document.getElementById("addCart").addEventListener("click", () => {
+      if (S.Cart) S.Cart.add(p.id, currentVariant(), +qty.value || 1);
+      if (S.toast) S.toast(`${p.name || defaultData.name} (${currentVariant()}) masuk keranjang`);
+    });
+    
+    document.getElementById("buyNow").addEventListener("click", () => {
+      if (S.Cart) S.Cart.add(p.id, currentVariant(), +qty.value || 1);
+    });
+
+    // Tombol Wishlist
+    const wishBtn = document.getElementById("wishBtn");
+    function updateWishBtnUI() {
+      const isSaved = S.Wish ? S.Wish.has(p.id) : false;
+      wishBtn.setAttribute("aria-pressed", isSaved);
+      wishBtn.textContent = isSaved ? "❤️ Tersimpan di Wishlist" : "Simpan ke Wishlist";
+    }
+    
+    updateWishBtnUI();
+    
+    wishBtn.addEventListener("click", () => {
+      if (S.Wish) {
+        const on = S.Wish.toggle(p.id);
+        updateWishBtnUI();
+        if (S.toast) S.toast(on ? "Disimpan ke wishlist" : "Dihapus dari wishlist");
+      }
+    });
+
+    // Isi Tab-panel
+    const panels = {
+      deskripsi: `<p>${p.description || defaultData.description}</p>`,
+      sejarah: `<p>${p.history || defaultData.history}</p>`,
+      keunikan: `<p>${p.uniqueness || defaultData.uniqueness}</p>`,
+      komposisi: `<dl>
+        <dt><b>Komposisi Bahan & Rempah:</b></dt>
+        <dd>${p.composition || defaultData.composition}</dd>
+        <br>
+        <dt><b>Pelengkap / Topping:</b></dt>
+        <dd>Mie, Siomay, Batagor Kering, dan Pilus Renyah.</dd>
+        <br>
+        <dt><b>Petunjuk Cara Penyajian:</b></dt>
+        <dd>${p.usage || defaultData.usage}</dd>
+      </dl>`,
+      packaging: `<p>${p.packaging || defaultData.packaging}</p>`
+    };
+    
+    Object.entries(panels).forEach(([k, html]) => {
+      const el = document.querySelector(`[data-panel="${k}"]`);
+      if (el) el.innerHTML = html;
+    });
+
+    document.querySelectorAll(".tabs-nav button").forEach(btn => btn.addEventListener("click", () => {
+      document.querySelectorAll(".tabs-nav button").forEach(b => b.classList.toggle("on", b === btn));
+      document.querySelectorAll(".tab-panel").forEach(pnl => pnl.hidden = pnl.dataset.panel !== btn.dataset.tab);
+    }));
+  });
+  </script>
+</body>
+</html>

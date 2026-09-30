@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+  <a class="skip-link" href="#panel">Lewati ke formulir</a>
+
+  <div class="shell">
+    <!-- ============ PANEL KIRI: brand & visual ============ -->
+    <aside class="stage" aria-label="Tentang brand">
+      <svg class="contours" id="contours" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+
+      <a class="brand" href="#" data-home>
+        <span class="brand-mark" data-brand-mark aria-hidden="true">N</span>
+        <span class="brand-name" data-brand-name>Nama Brand</span>
+      </a>
+
+      <div class="stage-copy">
+        <p class="statement" data-statement>Warisan rasa, dikemas untuk hari ini.</p>
+        <p class="story" data-story></p>
+      </div>
+
+      <figure class="arch" id="arch">
+        <div class="arch-inner" id="archInner" role="img" aria-label="Foto produk unggulan">
+          <span class="arch-hint" data-hero-hint>Foto produk atau packaging</span>
+        </div>
+      </figure>
+    </aside>
+
+    <!-- ============ PANEL KANAN: form ============ -->
+    <main class="panel" id="panel" tabindex="-1">
+      <div class="panel-inner">
+
+        <p class="demo-note" id="demoNote" hidden>
+          Mode demo: akun hanya tersimpan di browser ini dan belum terhubung ke server.
+        </p>
+
+        <!-- ---------- MASUK ---------- -->
+        <section class="view" data-view="login" aria-labelledby="t-login">
+          <header class="view-head">
+            <h1 id="t-login" tabindex="-1">Selamat datang kembali</h1>
+            <p>Masuk untuk melanjutkan belanja dan melihat pesananmu.</p>
+          </header>
+
+          <form id="form-login" novalidate>
+            <p class="form-alert" role="alert" hidden></p>
+
+            <div class="field">
+              <label for="l-email">Email</label>
+              <input id="l-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nama@email.com" data-rule="email" data-autofocus>
+              <p class="field-error" id="l-email-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <div class="label-row">
+                <label for="l-password">Kata sandi</label>
+                <button type="button" class="link" data-goto="forgot">Lupa kata sandi?</button>
+              </div>
+              <div class="pw">
+                <input id="l-password" name="password" type="password" autocomplete="current-password" placeholder="Kata sandi kamu" data-rule="required-password">
+                <button type="button" class="pw-toggle" aria-label="Tampilkan kata sandi" aria-pressed="false">
+                  <svg class="i-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="i-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.5 6.9C3.7 8.7 2 12 2 12s3.6 7 10 7c1.5 0 2.9-.4 4.1-1M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                </button>
+              </div>
+              <p class="field-error" id="l-password-error" hidden></p>
+            </div>
+
+            <label class="check">
+              <input type="checkbox" name="remember" id="l-remember">
+              <span>Ingat saya di perangkat ini</span>
+            </label>
+
+            <button class="btn btn-primary" type="submit" data-label="Masuk">
+              <span class="btn-text">Masuk</span><span class="spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <p class="switch">Belum punya akun? <button type="button" class="link" data-goto="register">Daftar sekarang</button></p>
+        </section>
+
+        <!-- ---------- DAFTAR ---------- -->
+        <section class="view" data-view="register" aria-labelledby="t-register" hidden>
+          <header class="view-head">
+            <h1 id="t-register" tabindex="-1">Buat akun baru</h1>
+            <p>Simpan alamat, wishlist, dan riwayat pesananmu dalam satu akun.</p>
+          </header>
+
+          <form id="form-register" novalidate>
+            <p class="form-alert" role="alert" hidden></p>
+
+            <div class="field">
+              <label for="r-name">Nama lengkap</label>
+              <input id="r-name" name="name" type="text" autocomplete="name" placeholder="Nama sesuai identitas" data-rule="name" data-autofocus>
+              <p class="field-error" id="r-name-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="r-email">Email</label>
+              <input id="r-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nama@email.com" data-rule="email">
+              <p class="field-error" id="r-email-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="r-phone">Nomor telepon <span class="optional">(opsional)</span></label>
+              <input id="r-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="08123456789" data-rule="phone">
+              <p class="field-error" id="r-phone-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="r-password">Kata sandi</label>
+              <div class="pw">
+                <input id="r-password" name="password" type="password" autocomplete="new-password" placeholder="Minimal 8 karakter" data-rule="new-password" aria-describedby="strength-text">
+                <button type="button" class="pw-toggle" aria-label="Tampilkan kata sandi" aria-pressed="false">
+                  <svg class="i-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="i-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.5 6.9C3.7 8.7 2 12 2 12s3.6 7 10 7c1.5 0 2.9-.4 4.1-1M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                </button>
+              </div>
+              <div class="strength" id="strength" data-level="0">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <p class="strength-text" id="strength-text" aria-live="polite">Gunakan kombinasi huruf besar, kecil, angka, dan simbol.</p>
+              <p class="field-error" id="r-password-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="r-confirm">Konfirmasi kata sandi</label>
+              <div class="pw">
+                <input id="r-confirm" name="confirm" type="password" autocomplete="new-password" placeholder="Ulangi kata sandi" data-rule="confirm">
+                <button type="button" class="pw-toggle" aria-label="Tampilkan kata sandi" aria-pressed="false">
+                  <svg class="i-eye" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="i-eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18M10.6 6.1A10 10 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.5 6.9C3.7 8.7 2 12 2 12s3.6 7 10 7c1.5 0 2.9-.4 4.1-1M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+                </button>
+              </div>
+              <p class="field-error" id="r-confirm-error" hidden></p>
+            </div>
+
+            <div class="field">
+              <label class="check">
+                <input type="checkbox" name="terms" id="r-terms" data-rule="terms" aria-describedby="r-terms-error">
+                <span>Saya setuju dengan syarat dan ketentuan serta kebijakan privasi.</span>
+              </label>
+              <p class="field-error" id="r-terms-error" hidden></p>
+            </div>
+
+            <button class="btn btn-primary" type="submit" data-label="Buat akun">
+              <span class="btn-text">Buat akun</span><span class="spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <p class="switch">Sudah punya akun? <button type="button" class="link" data-goto="login">Masuk</button></p>
+        </section>
+
+        <!-- ---------- LUPA KATA SANDI ---------- -->
+        <section class="view" data-view="forgot" aria-labelledby="t-forgot" hidden>
+          <header class="view-head">
+            <h1 id="t-forgot" tabindex="-1">Atur ulang kata sandi</h1>
+            <p>Masukkan email akunmu. Kami akan mengirim tautan untuk membuat kata sandi baru.</p>
+          </header>
+
+          <form id="form-forgot" novalidate>
+            <p class="form-alert" role="alert" hidden></p>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="nama@email.com" data-rule="email" data-autofocus>
+              <p class="field-error" id="f-email-error" hidden></p>
+            </div>
+            <button class="btn btn-primary" type="submit" data-label="Kirim tautan">
+              <span class="btn-text">Kirim tautan</span><span class="spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <p class="switch"><button type="button" class="link" data-goto="login">Kembali ke halaman masuk</button></p>
+        </section>
+
+        <!-- ---------- SUKSES ---------- -->
+        <section class="view view-success" data-view="success" aria-labelledby="t-success" hidden>
+          <div class="check-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </div>
+          <header class="view-head">
+            <h1 id="t-success" tabindex="-1">Halo, <span id="successName">kamu</span></h1>
+            <p id="successText">Kamu sudah masuk.</p>
+          </header>
+          <a class="btn btn-primary" id="successGo" href="#" hidden><span class="btn-text">Lanjut belanja</span></a>
+          <p class="demo-note inline" id="successNote" hidden>Halaman tujuan belum diatur. Isi <code>redirectAfterLogin</code> di <code>js/config.js</code>.</p>
+          <button type="button" class="btn btn-ghost" id="btn-logout"><span class="btn-text">Keluar</span></button>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="js/config.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

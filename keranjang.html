@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keranjang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/shop.css">
+</head>
+<body data-page="keranjang">
+<a class="skip-link" href="#konten">Lewati ke konten</a>
+<div id="site-header"></div>
+<main id="konten">
+  <div class="wrap pageintro">
+    <p class="breadcrumb"><a href="index.html">Beranda</a> / Keranjang</p>
+    <h1 class="display" style="font-size:clamp(1.8rem,2.6vw + .6rem,2.6rem)">Keranjang Belanja</h1>
+  </div>
+  <div class="wrap cart-layout" id="cartLayout">
+    <div id="cartList"></div>
+    <aside class="summary" id="summaryBox" hidden>
+      <h2>Ringkasan Pesanan</h2>
+      <div class="voucher"><input type="text" id="voucherInput" placeholder="Kode voucher"><button class="btn btn-outline" id="voucherBtn" style="height:42px;padding:0 16px">Pakai</button></div>
+      <p class="muted" id="voucherMsg" style="font-size:.8125rem"></p>
+      <div class="summary-row"><span>Subtotal</span><span id="sSubtotal">Rp 0</span></div>
+      <div class="summary-row"><span>Ongkir</span><span id="sShip">Rp 15.000</span></div>
+      <div class="summary-row" id="sDiscRow" hidden><span>Voucher</span><span id="sDisc">−Rp 0</span></div>
+      <div class="summary-row total"><span>Total</span><span id="sTotal">Rp 0</span></div>
+      <a class="btn btn-primary" href="checkout.html" style="width:100%;margin-top:var(--s-4)">Lanjut ke Checkout</a>
+    </aside>
+  </div>
+</main>
+<div id="site-footer"></div>
+<script src="js/config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="js/products.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener("site:ready", () => {
+  const S = window.Site;
+  const SHIP = 15000;
+  function render() {
+    const items = S.Cart.items();
+    const list = document.getElementById("cartList");
+    const box = document.getElementById("summaryBox");
+    if (!items.length) {
+      list.innerHTML = `<div class="empty"><p>Keranjangmu masih kosong.</p><a class="btn btn-primary" href="produk.html" style="margin-top:16px;display:inline-flex">Mulai Belanja</a></div>`;
+      box.hidden = true; return;
+    }
+    box.hidden = false;
+    let subtotal = 0;
+    list.innerHTML = items.map((it, idx) => {
+      const p = S.byId(it.id); if (!p) return "";
+      const lineTotal = p.price * it.qty; subtotal += lineTotal;
+      const img = p.image ? `<img src="${p.image}" alt="${p.name}">` : `<div class="ph" style="min-height:0" role="img" aria-label="Foto ${p.name} belum tersedia"></div>`;
+      return `<div class="cart-line" data-idx="${idx}">
+        <div class="cart-thumb">${img}</div>
+        <div><h3>${p.name}</h3><p class="muted">${it.variant}</p>
+          <div class="qty" style="margin-top:8px;height:38px">
+            <button type="button" data-dec>−</button><input type="text" value="${it.qty}" data-qty inputmode="numeric" aria-label="Jumlah"><button type="button" data-inc>+</button>
+          </div></div>
+        <div class="cart-line-end"><strong>${S.rupiah(lineTotal)}</strong><button class="remove-btn" data-remove>Hapus</button></div>
+      </div>`;
+    }).join("");
+    const disc = document.getElementById("sDiscRow").hidden ? 0 : (window.__discount || 0);
+    document.getElementById("sSubtotal").textContent = S.rupiah(subtotal);
+    document.getElementById("sShip").textContent = S.rupiah(SHIP);
+    document.getElementById("sTotal").textContent = S.rupiah(Math.max(0, subtotal + SHIP - disc));
+  }
+  document.getElementById("cartList").addEventListener("click", (e) => {
+    const line = e.target.closest(".cart-line"); if (!line) return;
+    const idx = +line.dataset.idx; const items = S.Cart.items();
+    if (e.target.closest("[data-remove]")) items.splice(idx,1);
+    else if (e.target.closest("[data-inc]")) items[idx].qty++;
+    else if (e.target.closest("[data-dec]")) items[idx].qty = Math.max(1, items[idx].qty-1);
+    else return;
+    localStorage.setItem("site_cart", JSON.stringify(items)); render();
+    document.querySelectorAll(".cart-count").forEach(el=>{const n=S.Cart.count();el.textContent=n||"";el.dataset.n=n;});
+  });
+  document.getElementById("voucherBtn").addEventListener("click", () => {
+    const code = document.getElementById("voucherInput").value.trim().toUpperCase();
+    const msg = document.getElementById("voucherMsg");
+    if (!code) { msg.textContent = "Masukkan kode voucher."; return; }
+    msg.textContent = "Kode voucher tidak ditemukan (demo: belum ada voucher aktif).";
+    msg.style.color = "var(--error)";
+  });
+  render();
+});
+</script>
+</body>
+</html>

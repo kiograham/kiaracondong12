@@ -1,0 +1,537 @@
+/* =========================================================
+   HOME.CSS — Premium Animations & Full Responsive (All Devices)
+   ========================================================= */
+
+/* 1. HERO SECTION */
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(40px, 8vw, 100px) 0 clamp(48px, 9vw, 120px);
+  background: radial-gradient(110% 80% at 90% 100%, #24583f, transparent 60%), var(--primary-dark);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .35;
+  background: repeating-radial-gradient(ellipse at 78% 82%, transparent 0 46px, rgb(184 137 74 / .22) 47px 48px);
+  pointer-events: none;
+}
+
+.hero-in {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: var(--s-12, 3rem);
+  align-items: center;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 5.2vw + 0.5rem, 5.2rem);
+  max-width: 14ch;
+  text-wrap: balance;
+  line-height: 1.1;
+}
+
+.hero p.lead {
+  margin-top: var(--s-6, 1.5rem);
+  max-width: 32rem;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  color: var(--on-dark-muted);
+  line-height: 1.6;
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: var(--s-8, 2rem);
+}
+
+/* Arch Image Wrap & Floating Animation */
+.arch-wrap {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 380px;
+}
+
+.arch {
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  max-width: 380px;
+  padding: 8px;
+  border: 1px solid rgb(184 137 74 / .55);
+  border-radius: 50% 50% 14px 14px / 37.5% 37.5% 14px 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+
+.arch:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 30px 50px rgba(0,0,0,0.4);
+}
+
+.arch > * {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.arch:hover > * {
+  transform: scale(1.05);
+}
+
+.arch .ph {
+  display: grid;
+  place-items: end center;
+  padding-bottom: 24px;
+}
+
+.float-note {
+  position: absolute;
+  left: -20px;
+  top: 18%;
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: .875rem;
+  font-weight: 500;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  backdrop-filter: blur(8px);
+  z-index: 2;
+  animation: floatIdle 4s ease-in-out infinite alternative;
+}
+
+@keyframes floatIdle {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* Entrada Animasi Hero (Entrance Keyframes) */
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1 { animation: heroUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero p.lead { animation: heroUp 0.8s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-cta { animation: heroUp 0.8s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .arch-wrap { animation: archReveal 1s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+  @keyframes heroUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes archReveal {
+    from { opacity: 0; transform: scale(0.92) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+}
+
+/* 2. NILAI JUAL (VALUES STRIP) */
+.values {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.values ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.values li {
+  padding: 24px 20px;
+  border-left: 1px solid var(--border);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.values li:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.values li:hover {
+  background: rgba(0, 0, 0, 0.02);
+  transform: translateY(-2px);
+}
+
+.values strong {
+  display: block;
+  font-size: .9375rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.values span {
+  font-size: .8125rem;
+  color: var(--text-muted);
+}
+
+/* 3. PRODUK UNGGULAN (FEATURED) */
+.featured {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+
+.featured-img {
+  aspect-ratio: 5 / 4;
+  border-radius: var(--radius-lg, 16px);
+  overflow: hidden;
+  background: #e9e1cf;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.08);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+}
+
+.featured-img:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.14);
+}
+
+.featured-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featured-img:hover img {
+  transform: scale(1.06);
+}
+
+.featured h3 {
+  font-size: clamp(2rem, 3vw + 0.5rem, 3.2rem);
+  margin: 6px 0 var(--s-3, 0.75rem);
+  line-height: 1.15;
+}
+
+.featured .price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: block;
+  margin: var(--s-4, 1rem) 0;
+  color: var(--primary, #000);
+}
+
+.featured .pills {
+  margin: var(--s-3, 0.75rem) 0 var(--s-6, 1.5rem);
+}
+
+.featured-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* 4. CERITA KAMI & STATISTIK */
+.story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 6vw, 96px);
+  align-items: center;
+}
+
+.story h2 {
+  font-size: clamp(2rem, 3.4vw + 0.5rem, 3.4rem);
+  line-height: 1.15;
+}
+
+.story p {
+  margin-top: var(--s-4, 1rem);
+  max-width: 32rem;
+  line-height: 1.6;
+}
+
+.stats {
+  display: grid;
+  gap: 0;
+}
+
+.stats div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 22px 0;
+  border-top: 1px solid rgb(246 241 231 / .2);
+  transition: transform 0.3s ease, padding 0.3s ease;
+}
+
+.stats div:hover {
+  transform: translateX(6px);
+}
+
+.stats div:last-child {
+  border-bottom: 1px solid rgb(246 241 231 / .2);
+}
+
+.stats b {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3vw, 2.8rem);
+  font-weight: 500;
+  color: var(--accent, #b8894a);
+}
+
+.stats span {
+  color: var(--on-dark-muted);
+  text-align: right;
+  font-size: .9375rem;
+}
+
+/* 5. KENAPA ISTIMEWA (WHY SECTION) */
+.why {
+  display: grid;
+}
+
+.why div {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--s-8, 2rem);
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
+  transition: background-color 0.3s ease, padding-left 0.3s ease;
+}
+
+.why div:hover {
+  padding-left: 12px;
+}
+
+.why div:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.why h3 {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.why p {
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* 6. PACKAGING SECTION */
+.pack {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+
+.pack-imgs {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  isolation: isolate;
+  width: 100%;
+}
+
+.pack-imgs > * {
+  position: absolute;
+  border-radius: var(--radius-lg, 16px);
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pack-imgs > :first-child {
+  inset: 0 22% 22% 0;
+}
+
+.pack-imgs > :last-child {
+  inset: 34% 0 0 38%;
+  border: 6px solid var(--background, #fff);
+  z-index: 2;
+}
+
+.pack-imgs:hover > :first-child {
+  transform: translate(-6px, -6px) scale(1.02);
+}
+
+.pack-imgs:hover > :last-child {
+  transform: translate(8px, 8px) scale(1.03);
+}
+
+.pack-imgs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pack-imgs > .ph {
+  width: auto;
+  height: auto;
+  min-height: 0;
+}
+
+.pack h2 {
+  font-size: clamp(2rem, 3vw + 0.5rem, 3.2rem);
+  line-height: 1.15;
+}
+
+.pack p {
+  margin: var(--s-4, 1rem) 0 var(--s-6, 1.5rem);
+  color: var(--text-muted);
+  max-width: 30rem;
+  line-height: 1.6;
+}
+
+/* 7. ULASAN / REVIEWS */
+.reviews {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-8, 2rem);
+}
+
+.reviews blockquote {
+  margin: 0;
+  padding-top: var(--s-4, 1rem);
+  border-top: 2px solid var(--accent, #b8894a);
+  transition: transform 0.3s ease;
+}
+
+.reviews blockquote:hover {
+  transform: translateY(-4px);
+}
+
+.reviews blockquote p {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.reviews footer {
+  margin-top: var(--s-4, 1rem);
+  font-size: .875rem;
+  color: var(--text-muted);
+}
+
+/* 8. CALL TO ACTION (CTA AKHIR) */
+.cta {
+  text-align: center;
+  padding: clamp(60px, 9vw, 130px) 20px;
+  background: radial-gradient(90% 120% at 50% 130%, #24583f, transparent 65%), var(--primary-dark);
+}
+
+.cta h2 {
+  font-size: clamp(2rem, 4vw + 0.5rem, 4.2rem);
+  max-width: 18ch;
+  margin: 0 auto var(--s-8, 2rem);
+  text-wrap: balance;
+  line-height: 1.15;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN (RESPONSIVE DARI LAPTOP KE HP SANGAT HALUS)
+   ========================================================= */
+
+/* Tablet & Mobile Landscape (< 960px) */
+@media (max-width: 960px) {
+  .hero-in, 
+  .featured, 
+  .story, 
+  .pack {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-in {
+    gap: var(--s-8, 2rem);
+    text-align: center;
+  }
+
+  .hero h1, 
+  .hero p.lead {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta {
+    justify-content: center;
+  }
+
+  .arch-wrap {
+    justify-self: center;
+    max-width: 280px;
+    margin-top: 16px;
+  }
+
+  .float-note {
+    left: -10px;
+    top: 10%;
+  }
+
+  .values ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .values li {
+    border-left: 0;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .values li:nth-child(even) {
+    border-left: 1px solid var(--border);
+  }
+
+  .why div {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .reviews {
+    grid-template-columns: 1fr;
+    gap: var(--s-6, 1.5rem);
+  }
+}
+
+/* HP Small Devices (< 576px) */
+@media (max-width: 576px) {
+  .hero-cta {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .values ul {
+    grid-template-columns: 1fr;
+  }
+
+  .values li {
+    border-left: 0 !important;
+    padding-left: 0;
+  }
+
+  .featured-cta {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .featured-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pack-imgs {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .float-note {
+    font-size: 0.75rem;
+    padding: 8px 12px;
+  }
+}

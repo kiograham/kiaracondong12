@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Akun Saya | Masitoh Obea</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Wajib -->
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="stylesheet" href="css/shop.css">
+
+  <style>
+    /* Styling Tambahan Khusus Halaman Akun */
+    
+    /* Wrapper Konten Utama agar tidak mepet header/footer */
+    .account-main {
+      padding-top: var(--s-8);
+      padding-bottom: var(--s-10);
+      min-height: 60vh; /* Agar footer tetap di bawah jika konten sedikit */
+    }
+
+    /* Navigasi Tab Modern */
+    .tabs-nav {
+      display: flex;
+      gap: var(--s-2);
+      border-bottom: 2px solid var(--border-light, #f0f0f0);
+      margin-bottom: var(--s-6);
+      overflow-x: auto; /* Scroll horizontal di mobile */
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: var(--s-3) var(--s-4);
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      font-size: 0.95rem;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+    }
+
+    .tab-btn.active-tab {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* Styling Section Profil */
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: var(--s-4);
+    }
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      background: var(--surface-sunken);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-family: var(--font-display);
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    /* Styling Kartu Pesanan */
+    .order-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .order-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .order-items-list {
+      margin-top: var(--s-3);
+      padding-top: var(--s-3);
+      border-top: 1px solid var(--border-light);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    .order-item-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    /* Badge Status Pesanan */
+    .badge-status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-diproses { background-color: #fef3c7; color: #92400e; } /* Kuning */
+    .status-dikirim { background-color: #dbeafe; color: #1e40af; }   /* Biru */
+    .status-selesai { background-color: #d1fae5; color: #065f46; }  /* Hijau */
+    .status-dibatalkan { background-color: #fee2e2; color: #991b1b; } /* Merah */
+
+  </style>
+</head>
+
+<body data-page="akun" style="visibility: hidden;"> <!-- Sembunyikan dulu sampai auth siap -->
+
+  <!-- Header -->
+  <div id="site-header"></div>
+
+  <main class="account-main wrap">
+    <nav class="breadcrumb" style="margin-bottom: 20px;">
+      <a href="index.html">Beranda</a> / <span>Akun Saya</span>
+    </nav>
+
+    <h1 class="display style-h2" style="margin-bottom: var(--s-5);">Selamat Datang, <span id="helloName">...</span></h1>
+
+    <!-- Navigasi Tab -->
+    <div class="tabs-nav" role="tablist">
+      <button class="tab-btn active-tab" id="btnTabProfil" onclick="switchAccountTab('profil')" role="tab" aria-selected="true" aria-controls="sectionProfil">Profil</button>
+      <button class="tab-btn" id="btnTabPesanan" onclick="switchAccountTab('pesanan')" role="tab" aria-selected="false" aria-controls="sectionPesanan">Riwayat Pesanan</button>
+      <button class="tab-btn" id="btnTabWishlist" onclick="switchAccountTab('wishlist')" role="tab" aria-selected="false" aria-controls="sectionWishlist">Wishlist</button>
+    </div>
+
+    <!-- ================= TAB PROFIL ================= -->
+    <div id="sectionProfil" class="tab-sec card profile-card" role="tabpanel" aria-labelledby="btnTabProfil">
+      <div class="profile-avatar" id="profileInitials">?</div>
+      <div class="profile-info" style="flex:1;">
+        <h3 class="display style-h4" id="accName" style="margin-bottom:4px;">Loading...</h3>
+        <p id="accEmail" class="muted" style="margin-bottom:12px;">-</p>
+        <div style="display:flex; gap:10px;">
+          <!-- Tombol edit profil bisa ditambahkan nanti -->
+          <button id="accLogout" class="btn btn-outline btn-sm" style="color:#dc2626; border-color:#dc2626;">Keluar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB PESANAN ================= -->
+    <div id="sectionPesanan" class="tab-sec" style="display:none;" role="tabpanel" aria-labelledby="btnTabPesanan">
+      <div id="accOrderList">
+        <div class="empty-state text-center" style="padding: var(--s-8) 0;">
+          <p class="muted">Memuat riwayat pesanan...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= TAB WISHLIST ================= -->
+    <div id="sectionWishlist" class="tab-sec" style="display:none;" role="tabpanel" aria-labelledby="btnTabWishlist">
+      <div id="accWishlistList" class="product-grid">
+        <div class="empty-state text-center" style="padding: var(--s-8) 0; grid-column: 1/-1;">
+          <p class="muted">Belum ada produk favorit.</p>
+          <a href="index.html#produk" class="btn btn-primary btn-sm" style="margin-top:10px;">Jelajahi Produk</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="site-footer"></div>
+
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/site.js"></script>
+
+  <script>
+    // Fungsi Switch Tab yang ditingkatkan
+    function switchAccountTab(tab) {
+      document.querySelectorAll('.tab-sec').forEach(el => {
+        el.style.display = 'none';
+        el.setAttribute('aria-hidden', 'true');
+      });
+      document.querySelectorAll('.tabs-nav .tab-btn').forEach(el => {
+        el.classList.remove('active-tab');
+        el.setAttribute('aria-selected', 'false');
+      });
+
+      const activeSection = document.getElementById('section' + tab.charAt(0).toUpperCase() + tab.slice(1));
+      const activeBtn = document.getElementById('btnTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+
+      if (activeSection && activeBtn) {
+        activeSection.style.display = (tab === 'profil') ? 'flex' : (tab === 'wishlist' ? 'grid' : 'block');
+        activeSection.setAttribute('aria-hidden', 'false');
+        activeBtn.classList.add('active-tab');
+        activeBtn.setAttribute('aria-selected', 'true');
+      }
+    }
+
+    document.addEventListener("site:ready", () => {
+      const S = window.Site;
+
+      // 1. Logika Autentikasi Firebase (Kritis)
+      if (typeof firebase !== "undefined" && firebase.apps.length) {
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            // User Login - Tampilkan halaman dan isi data
+            document.body.style.visibility = 'visible';
+            const name = user.displayName || user.email.split("@")[0];
+            const email = user.email;
+
+            document.getElementById("accName").textContent = name;
+            document.getElementById("helloName").textContent = name;
+            document.getElementById("accEmail").textContent = email;
+            
+            // Buat inisial untuk avatar
+            const initials = name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+            document.getElementById("profileInitials").textContent = initials;
+
+            // Lanjut load data konten
+            loadOrders(S);
+            loadWishlist(S);
+
+          } else {
+            // User Tidak Login - Tendang ke login.html
+            window.location.href = "login.html";
+          }
+        });
+
+        // Handler Tombol Logout
+        document.getElementById("accLogout").addEventListener("click", (e) => {
+          e.preventDefault();
+          if(confirm("Apakah Anda yakin ingin keluar?")) {
+            firebase.auth().signOut().then(() => {
+              window.location.href = "login.html";
+            });
+          }
+        });
+      } else {
+        // Firebase tidak terkonfigurasi, anggap mode demo atau error
+        document.body.style.visibility = 'visible';
+        document.getElementById("accName").textContent = "Demo User";
+        console.error("Firebase tidak aktif.");
+        loadOrders(S);
+        loadWishlist(S);
+      }
+
+    });
+
+    // --- Fungsi Helper untuk Load Data ---
+
+    // 2. Render Pesanan dengan Detail Item
+    function loadOrders(S) {
+      const orders = JSON.parse(localStorage.getItem("site_orders") || "[]");
+      const box = document.getElementById("accOrderList");
+
+      if (!orders.length) {
+        box.innerHTML = `
+          <div class="empty-state card text-center" style="padding: var(--s-8);">
+            <p class="muted" style="margin-bottom:10px;">Anda belum memiliki riwayat pesanan.</p>
+            <a href="index.html#produk" class="btn btn-primary">Mulai Belanja</a>
+          </div>`;
+        return;
+      }
+
+      // Urutkan pesanan terbaru di atas
+      orders.sort((a,b) => b.date - a.date);
+
+      box.innerHTML = orders.map(ord => {
+        // Format ID
+        let orderId = ord.id || "";
+        if (!orderId.startsWith("KC")) {
+          orderId = "KC" + orderId.toString().padStart(5, '0');
+        }
+        
+        // Format Tanggal
+        const tglObj = new Date(ord.date || Date.now());
+        const tglSimpel = tglObj.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+        const waktuSimpel = tglObj.toLocaleTimeString("id-ID", { hour: '2-digit', minute:'2-digit' });
+        
+        // Map Status ke Class CSS
+        const statusClass = 'status-' + (ord.status || 'diproses').toLowerCase().replace(' ', '');
+        
+        // Render Daftar Item di dalam pesanan (Baru)
+        let itemsHtml = '';
+        if(ord.items && ord.items.length > 0) {
+          itemsHtml = `<div class="order-items-list">`;
+          ord.items.forEach(item => {
+            const prod = S.byId(item.id);
+            const itemName = prod ? prod.name : `Produk #${item.id}`;
+            itemsHtml += `
+              <div class="order-item-row">
+                <span>${itemName} (${item.variant}) x ${item.qty}</span>
+                <span>${S.rupiah((prod ? prod.price : 0) * item.qty)}</span>
+              </div>`;
+          });
+          itemsHtml += `</div>`;
+        }
+
+        return `
+          <div class="card order-card" style="padding:var(--s-4); margin-bottom:var(--s-4);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;">
+              <div>
+                <strong style="font-size:1.1rem; color:var(--primary);">#${orderId}</strong>
+                <p class="muted" style="font-size:0.85rem; margin-top:2px;">Dipesan pada ${tglSimpel}, ${waktuSimpel}</p>
+              </div>
+              <div class="text-right-sm" style="flex-shrink:0;">
+                <span class="badge-status ${statusClass}">${ord.status || "Diproses"}</span>
+                <p style="margin-top:5px;">Metode: <span class="text-uppercase" style="font-weight:600; font-size:0.85rem;">${ord.payment || "cash"}</span></p>
+              </div>
+            </div>
+            
+            ${itemsHtml}
+
+            <div style="margin-top:var(--s-3); padding-top:var(--s-3); border-top:2px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+              <span class="muted">Total Pembayaran</span>
+              <span class="price style-h4" style="color:var(--text);">${S.rupiah(ord.total || 0)}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 3. Render Wishlist NYATA (Baru)
+    function loadWishlist(S) {
+      // Ambil ID produk dari wishlist localStorage (asumsi disimpan oleh S.Wish)
+      const wishIds = JSON.parse(localStorage.getItem("site_wish") || "[]");
+      const grid = document.getElementById("accWishlistList");
+
+      if (!wishIds.length) {
+        // Gunakan empty state default di HTML
+        return;
+      }
+
+      // Bersihkan loading state
+      grid.innerHTML = '';
+
+      let hasItems = false;
+
+      wishIds.forEach(id => {
+        const product = S.byId(id);
+        if (product) {
+          hasItems = true;
+          // Buat elemen wrapper untuk kartu produk
+          const cardWrap = document.createElement('div');
+          
+          // Render kartu produk menggunakan fungsi global site.js (konsistensi UI)
+          cardWrap.innerHTML = S.productCard(product);
+          
+          // Modifikasi tombol di kartu produk (opsional, misal ganti 'Tambah' jadi 'Lihat')
+          const btnHtml = `<a href="produk.html?id=${product.id}" class="btn btn-primary btn-sm btn-block">Lihat Detail</a>`;
+          const cartBtn = cardWrap.querySelector('[data-add]');
+          if(cartBtn) cartBtn.parentElement.innerHTML = btnHtml;
+
+          // Tambahkan tombol hapus dari wishlist khusus di halaman akun
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'btn btn-ghost btn-sm btn-block';
+          removeBtn.style.cssText = 'color:#dc2626; margin-top:5px; padding:2px; font-size:0.8rem;';
+          removeBtn.textContent = 'Hapus dari Favorit';
+          removeBtn.onclick = () => {
+            if(confirm(`Hapus ${product.name} dari favorit?`)) {
+              S.Wish.toggle(product.id); // Panggil fungsi toggle di site.js
+              loadWishlist(S); // Reload tab wishlist
+            }
+          };
+          cardWrap.querySelector('.pcard-body').appendChild(removeBtn);
+
+          grid.appendChild(cardWrap.firstChild);
+        }
+      });
+
+      if(!hasItems) {
+         grid.innerHTML = `<div class="empty-state text-center" style="padding: var(--s-8) 0; grid-column: 1/-1;"><p class="muted">Produk di wishlist tidak ditemukan.</p></div>`;
+      }
+    }
+  </script>
+</body>
+</html>
